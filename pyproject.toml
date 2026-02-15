@@ -1,0 +1,42 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "termical"
+version = "0.1.0"
+description = "Termical - Where your schedule meets your terminal"
+readme = "README.md"
+requires-python = ">=3.11"
+authors = [
+    {name = "Termical Team"}
+]
+dependencies = [
+    "typer[all]>=0.12.0",
+    "rich>=13.7.0",
+    "sqlalchemy>=2.0.0",
+    "psycopg2-binary>=2.9.9",
+    "google-auth>=2.27.0",
+    "google-auth-oauthlib>=1.2.0",
+    "google-auth-httplib2>=0.2.0",
+    "google-api-python-client>=2.115.0",
+    "openai>=1.10.0",
+    "keyring>=24.3.0",
+    "python-dotenv>=1.0.0",
+    "toml>=0.10.2",
+    "questionary>=2.0.1",
+]
+
+[project.scripts]
+termical = "termical.cli:app"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4.0",
+    "pytest-cov>=4.1.0",
+    "black>=23.0.0",
+    "ruff>=0.1.0",
+]

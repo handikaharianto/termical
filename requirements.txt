@@ -1,0 +1,24 @@
+# CLI Framework
+typer[all]>=0.12.0
+rich>=13.7.0
+
+# Database
+sqlalchemy>=2.0.0
+psycopg2-binary>=2.9.9
+
+# Google Calendar API
+google-auth>=2.27.0
+google-auth-oauthlib>=1.2.0
+google-auth-httplib2>=0.2.0
+google-api-python-client>=2.115.0
+
+# OpenAI
+openai>=1.10.0
+
+# Configuration & Secrets
+keyring>=24.3.0
+python-dotenv>=1.0.0
+toml>=0.10.2
+
+# Interactive Setup
+questionary>=2.0.1

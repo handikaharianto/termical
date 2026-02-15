@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16
+    container_name: termical-db
+    environment:
+      POSTGRES_USER: termical_user
+      POSTGRES_PASSWORD: termical_pass
+      POSTGRES_DB: termical
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U termical_user -d termical"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:
