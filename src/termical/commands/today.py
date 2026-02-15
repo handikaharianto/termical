@@ -70,7 +70,6 @@ def show_today(verbose: bool = False) -> None:
     table.add_column("Title", style="white")
     table.add_column("Duration", justify="right", style="magenta", width=8)
     table.add_column("Attendees", justify="right", style="green", width=9)
-
     # Add rows
     for activity in activities:
         # Format time (convert from UTC to local)

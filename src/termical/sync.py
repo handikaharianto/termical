@@ -117,8 +117,14 @@ class SyncEngine:
         """
         session = self.db.get_session()
         try:
+            # Use local timezone to determine "today", but convert to UTC for DB comparison
+            now_local = datetime.now().astimezone()
+            today_start_local = now_local.replace(hour=0, minute=0, second=0, microsecond=0)
+            
+            # Convert to UTC naive for database comparison
+            from datetime import timezone
+            today_start = today_start_local.astimezone(timezone.utc).replace(tzinfo=None)
             now = datetime.utcnow()
-            today_start = now.replace(hour=0, minute=0, second=0, microsecond=0)
             
             # Check if any activity for today was synced recently
             stmt = (
@@ -150,9 +156,15 @@ class SyncEngine:
         """
         session = self.db.get_session()
         try:
-            now = datetime.utcnow()
-            today_start = now.replace(hour=0, minute=0, second=0, microsecond=0)
-            today_end = today_start + timedelta(days=1)
+            # Use local timezone to determine "today", but convert to UTC for DB comparison
+            now_local = datetime.now().astimezone()
+            today_start_local = now_local.replace(hour=0, minute=0, second=0, microsecond=0)
+            today_end_local = today_start_local + timedelta(days=1)
+            
+            # Convert to UTC naive for database comparison (DB stores naive UTC datetimes)
+            from datetime import timezone
+            today_start = today_start_local.astimezone(timezone.utc).replace(tzinfo=None)
+            today_end = today_end_local.astimezone(timezone.utc).replace(tzinfo=None)
             
             stmt = (
                 select(Activity)

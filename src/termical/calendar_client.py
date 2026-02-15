@@ -104,9 +104,16 @@ class CalendarClient:
             raise RuntimeError("Not authenticated. Call authenticate() first.")
         
         try:
-            # Convert to RFC3339 format
-            time_min = start_date.isoformat() + "Z"
-            time_max = end_date.isoformat() + "Z"
+            # Convert to RFC3339 format, preserving timezone if present
+            if start_date.tzinfo:
+                time_min = start_date.isoformat()
+            else:
+                time_min = start_date.isoformat() + "Z"
+            
+            if end_date.tzinfo:
+                time_max = end_date.isoformat()
+            else:
+                time_max = end_date.isoformat() + "Z"
             
             events_result = (
                 self.service.events()
@@ -144,10 +151,12 @@ class CalendarClient:
         Returns:
             List of today's event dictionaries
         """
-        now = datetime.utcnow().replace(hour=0, minute=0, second=0, microsecond=0)
-        tomorrow = now + timedelta(days=1)
+        # Use local timezone to determine "today"
+        now_local = datetime.now().astimezone()
+        today_start = now_local.replace(hour=0, minute=0, second=0, microsecond=0)
+        tomorrow_start = today_start + timedelta(days=1)
         
-        return self.fetch_events(now, tomorrow)
+        return self.fetch_events(today_start, tomorrow_start)
     
     def parse_event(self, event: dict[str, Any]) -> dict[str, Any]:
         """Parse a Google Calendar event into a normalized format.
